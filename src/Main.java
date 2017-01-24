@@ -1,20 +1,20 @@
 import java.util.Scanner;
 
-//TODO: Create Checking and Savings subclasses, modify accordingly
-//TODO: Allow for switching between accounts
 //TODO: Allow for transfer of funds between accounts
-//TODO: Ensure scanners close when appropriate
-//Create a new checking account
+//TODO: Handle negative account balances 
+//TODO: Handle negative user input for withdraw/deposit
+//TODO: Handle savings account interest
+//TODO: Handle checking account min. balance
+
 
 public class Main {
 	public static void main(String[] args) {
 		Scanner scanner=new Scanner(System.in);
-		System.out.println("Welcome!  Enter your initial deposit: ");
-		int initBalance=scanner.nextInt();
-		SavingsAccount savingsAccount=new SavingsAccount(initBalance, 1);
-		CheckingAccount checkingAccount = new CheckingAccount(initBalance, 1, 0);
+		System.out.println("Welcome!  Enter 0 to enter your savings account and 1 for your checking account: ");
+		int whichAccount=scanner.nextInt(); //0 represents savings, 1 represents checking
+		SavingsAccount savingsAccount=new SavingsAccount(0, 0);
+		CheckingAccount checkingAccount = new CheckingAccount(0, 1, 0);
 		Boolean hasQuit=false;
-		int whichAccount=0; //0 represents savings, 1 represents checking
 		while(!hasQuit){
 			if(whichAccount==0){ //if handling the savings account
 			System.out.println("You have $" + savingsAccount.getBalance() + " in your savings account.  Your account number is " + savingsAccount.getAccountNumber() + 
@@ -27,34 +27,30 @@ public class Main {
 			String accountChoiceLetter=scanner.next();
 			switch(accountChoiceLetter.toLowerCase()){
 			case "w":
-				//Sys, how much to withdraw?
-				//int wAmount=scanner.nextInt();
+				System.out.println("Enter withdrawal amount: ");
+				int wAmount=scanner.nextInt();
 				if(whichAccount==0){
-					//withdraw wAmount from savings
+					savingsAccount.withdraw(wAmount);
 				}
 				else{
-					//withdraw wAmount from checking 
+					checkingAccount.withdraw(wAmount); 
 				}
-				System.out.println("w");
 				break;
 			case "d":
-				//Sys, how much to deposit?
-				//int dAmount=scanner.nextInt();
+				System.out.println("Enter deposit amount: ");
+				int dAmount=scanner.nextInt();
 				if(whichAccount==0){
-					//deposit dAmount in savings
+					savingsAccount.deposit(dAmount);
 				}
 				else{
-					//deposit dAmount in checking
+					checkingAccount.deposit(dAmount);
 				}
-				System.out.println("d");
 				break;
 			case "s":
-				//0 for savings, 1 for checking
-				//whichAccount=scanner.nextInt()
-				System.out.println("s");
+				System.out.println("Enter 0 to switch to your savings account, and 1 to switch to your checking account");
+				whichAccount=scanner.nextInt();
 				break;
 			case "q":
-				System.out.println("q");
 				hasQuit=true;
 				break;
 			}
