@@ -3,8 +3,8 @@ public class Account {
 	private int accountNumber;
 	
 	public Account(double accountBalance, int number){
-		balance = accountBalance;
-		accountNumber = number;
+		balance=accountBalance;
+		accountNumber=number;
 	}
 	public double getBalance() {
 		return balance;
@@ -22,7 +22,7 @@ public class Account {
 	}
 
 	public void setAccountNumber(int accountNumber) {
-		this.accountNumber = accountNumber;
+		this.accountNumber=accountNumber;
 	}
 
 }
