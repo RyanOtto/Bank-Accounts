@@ -1,8 +1,6 @@
 import java.util.Scanner;
 
 //TODO: Allow for transfer of funds between accounts
-//TODO: Handle bad input for deposit
-//TODO: Handle bad input for account choice letter
 //TODO: Handle savings account interest
 //TODO: Handle checking account min. balance
 
@@ -36,14 +34,14 @@ public class Main {
 			case "w":
 				System.out.println("Enter withdrawal amount: ");
 				if(!scanner.hasNextDouble()){
-					System.out.println("Please enter a valid number");
+					System.out.println("\nERROR: Please enter a valid number");
 					outputInt=0;
 					break;
 				}
 				wAmount=scanner.nextDouble();
 				if(whichAccount==0){
 					if(wAmount > savingsAccount.getBalance() || wAmount < 0){//If user withdraws too much or withdraws an invalid number
-						System.out.println("\nInvalid withdrawal amount");
+						System.out.println("\nERROR: Invalid withdrawal amount");
 						outputInt=0;
 						break;
 					}	
@@ -51,7 +49,7 @@ public class Main {
 				}
 				else{
 					if(wAmount > checkingAccount.getBalance() || wAmount < 0){//If user withdraws too much or withdraws an invalid number
-						System.out.println("Invalid withdrawal amount");
+						System.out.println("\nERROR: Invalid withdrawal amount");
 						outputInt=0;
 						break;
 					}
@@ -62,7 +60,17 @@ public class Main {
 				
 			case "d":
 				System.out.println("Enter deposit amount: ");
+				if(!scanner.hasNextDouble()){
+						System.out.println("\nERROR: Please enter a valid number");
+						outputInt=0;
+						break;
+				}
 				dAmount=scanner.nextDouble();
+				if(dAmount < 0){//If user deposits an invalid number
+					System.out.println("\nERROR: Invalid deposit amount");
+					outputInt=0;
+					break;
+				}
 				if(whichAccount==0){
 					savingsAccount.deposit(dAmount);
 				}
@@ -79,8 +87,8 @@ public class Main {
 				break;
 				
 			case "q":
+				System.out.println("\nGoodbye.");
 				hasQuit=true;
-				outputInt=0;
 				break;
 			}
 		}
