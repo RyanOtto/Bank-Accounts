@@ -1,8 +1,11 @@
 import java.util.Scanner;
 
-//TODO: Allow for transfer of funds between accounts
-//TODO: Handle savings account interest
-//TODO: Handle checking account min. balance
+//TODO: Handle savings account interest ([c]ollect interest)
+	//SPEC: [c]ollect should only be in the savings account println
+	//savingsaccount.setbalance(balance*interest rate[*1.15 for 15%, for example]))
+
+//TODO: Handle checking account min. balance (when below min. balance, do the thing)
+	//If withdrawal or transfer puts user down below min. balance, do something about it
 
 
 public class Main {
@@ -11,8 +14,9 @@ public class Main {
 		Scanner scanner=new Scanner(System.in);
 		System.out.println("Welcome!  Enter 0 to enter your savings account and 1 for your checking account: ");
 		int whichAccount=scanner.nextInt(); //0 represents savings, 1 represents checking
-		double wAmount=0;
-		double dAmount=0;
+		double wAmount=0; //Withdrawal amount
+		double dAmount=0; //Deposit amount
+		int tAmount=0; //Transfer amount
 		SavingsAccount savingsAccount=new SavingsAccount(0, 0);
 		CheckingAccount checkingAccount = new CheckingAccount(0, 1, 0);
 		Boolean hasQuit=false;
@@ -30,6 +34,7 @@ public class Main {
 				outputInt=1;
 			}
 			String accountChoiceLetter=scanner.next();
+			
 			switch(accountChoiceLetter.toLowerCase()){
 			case "w":
 				System.out.println("Enter withdrawal amount: ");
@@ -39,22 +44,8 @@ public class Main {
 					break;
 				}
 				wAmount=scanner.nextDouble();
-				if(whichAccount==0){
-					if(wAmount > savingsAccount.getBalance() || wAmount < 0){//If user withdraws too much or withdraws an invalid number
-						System.out.println("\nERROR: Invalid withdrawal amount");
-						outputInt=0;
-						break;
-					}	
-					savingsAccount.withdraw(wAmount);
-				}
-				else{
-					if(wAmount > checkingAccount.getBalance() || wAmount < 0){//If user withdraws too much or withdraws an invalid number
-						System.out.println("\nERROR: Invalid withdrawal amount");
-						outputInt=0;
-						break;
-					}
-					checkingAccount.withdraw(wAmount); 
-				}
+				if(whichAccount==0)	savingsAccount.withdraw(wAmount);
+				else checkingAccount.withdraw(wAmount); 
 				outputInt=0;
 				break;
 				
@@ -66,30 +57,61 @@ public class Main {
 						break;
 				}
 				dAmount=scanner.nextDouble();
-				if(dAmount < 0){//If user deposits an invalid number
-					System.out.println("\nERROR: Invalid deposit amount");
-					outputInt=0;
-					break;
-				}
-				if(whichAccount==0){
-					savingsAccount.deposit(dAmount);
-				}
-				else{
-					checkingAccount.deposit(dAmount);
-				}
+				if(whichAccount==0) savingsAccount.deposit(dAmount);
+				else checkingAccount.deposit(dAmount);
 				outputInt=0;
 				break;
 				
 			case "s":
 				System.out.println("Enter 0 to enter your savings account, and 1 to enter your checking account");
 				whichAccount=scanner.nextInt();
+				if(whichAccount!=0 && whichAccount!=1){
+					System.out.println("Please enter 0 or 1");
+					outputInt=0;
+					break;
+				}
 				outputInt=0;
-				break;
-				
+				break;	
+
 			case "q":
 				System.out.println("\nGoodbye.");
 				hasQuit=true;
 				break;
+				
+			case "t":
+				if(whichAccount==0){
+					System.out.println("Enter tranfer amount to checking account: ");
+					if(!scanner.hasNextDouble()){
+						System.out.println("\nERROR: Please enter a valid number");
+						outputInt=0;
+						break;
+					}
+					tAmount=scanner.nextInt();
+					if(tAmount<=savingsAccount.getBalance()){
+						savingsAccount.withdraw(tAmount);
+						checkingAccount.deposit(tAmount);		
+					}
+				}
+				else if(whichAccount==1){
+					System.out.println("Enter tranfer amount to savings account: ");
+					if(!scanner.hasNextDouble()){
+						System.out.println("\nERROR: Please enter a valid number");
+						outputInt=0;
+						break;
+					}
+					tAmount=scanner.nextInt();
+					if(tAmount<=checkingAccount.getBalance()){
+						checkingAccount.withdraw(tAmount);
+						savingsAccount.deposit(tAmount);		
+					}
+				}
+				else{
+					System.out.println("Please enter a valid account number");
+				}
+				outputInt=0;
+				break;
+				
+			case "c":
 			}
 		}
 		scanner.close();

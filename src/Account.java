@@ -11,10 +11,10 @@ public class Account {
 	}
 
 	public void withdraw(double amount) {
-		this.balance-=amount;
+		if(amount<=balance && amount>0) this.balance-=amount;
 	}
 	public void deposit(double amount) {
-		this.balance+=amount;
+		if(amount>0) this.balance+=amount;
 	}
 
 	public int getAccountNumber() {
